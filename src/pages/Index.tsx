@@ -9,9 +9,28 @@ import { Separator } from '@/components/ui/separator';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeCalculator, setActiveCalculator] = useState('OSAGO');
+  
+  // ОСАГО
   const [carPower, setCarPower] = useState('');
   const [driverAge, setDriverAge] = useState('');
   const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
+  
+  // КАСКО
+  const [carValue, setCarValue] = useState('');
+  const [carAge, setCarAge] = useState('');
+  const [kaskoPrice, setKaskoPrice] = useState<number | null>(null);
+  
+  // Страхование жизни
+  const [personAge, setPersonAge] = useState('');
+  const [insuranceSum, setInsuranceSum] = useState('');
+  const [lifePrice, setLifePrice] = useState<number | null>(null);
+  
+  // Страхование имущества
+  const [propertyValue, setPropertyValue] = useState('');
+  const [propertyType, setPropertyType] = useState('apartment');
+  const [propertyPrice, setPropertyPrice] = useState<number | null>(null);
 
   const calculateOSAGO = () => {
     if (!carPower || !driverAge) return;
@@ -22,6 +41,39 @@ const Index = () => {
     
     const finalCost = Math.round(baseCost * powerMultiplier * ageMultiplier);
     setCalculatedPrice(finalCost);
+  };
+  
+  const calculateKASKO = () => {
+    if (!carValue || !carAge) return;
+    
+    const valueNum = parseInt(carValue);
+    const ageNum = parseInt(carAge);
+    const baseRate = 0.08; // 8% от стоимости
+    const ageMultiplier = ageNum > 5 ? 1.3 : ageNum > 3 ? 1.1 : 1.0;
+    
+    const finalCost = Math.round(valueNum * baseRate * ageMultiplier);
+    setKaskoPrice(finalCost);
+  };
+  
+  const calculateLife = () => {
+    if (!personAge || !insuranceSum) return;
+    
+    const ageNum = parseInt(personAge);
+    const sumNum = parseInt(insuranceSum);
+    const baseRate = ageNum < 30 ? 0.015 : ageNum < 50 ? 0.025 : 0.04;
+    
+    const finalCost = Math.round(sumNum * baseRate);
+    setLifePrice(finalCost);
+  };
+  
+  const calculateProperty = () => {
+    if (!propertyValue) return;
+    
+    const valueNum = parseInt(propertyValue);
+    const baseRate = propertyType === 'apartment' ? 0.003 : propertyType === 'house' ? 0.005 : 0.004;
+    
+    const finalCost = Math.round(valueNum * baseRate);
+    setPropertyPrice(finalCost);
   };
 
   const services = [
@@ -87,12 +139,60 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">с Марией Пармузиной</p>
               </div>
             </div>
-            <nav className="hidden md:flex items-center space-x-6">
-              <a href="#services" className="text-foreground hover:text-primary transition-colors">Услуги</a>
-              <a href="#calculator" className="text-foreground hover:text-primary transition-colors">Калькулятор</a>
-              <a href="#reviews" className="text-foreground hover:text-primary transition-colors">Отзывы</a>
-              <a href="#contacts" className="text-foreground hover:text-primary transition-colors">Контакты</a>
-            </nav>
+            <div className="flex items-center space-x-4">
+              <nav className="hidden md:flex items-center space-x-6">
+                <a href="#services" className="text-foreground hover:text-primary transition-colors">Услуги</a>
+                <a href="#calculator" className="text-foreground hover:text-primary transition-colors">Калькуляторы</a>
+                <a href="#reviews" className="text-foreground hover:text-primary transition-colors">Отзывы</a>
+                <a href="#contacts" className="text-foreground hover:text-primary transition-colors">Контакты</a>
+              </nav>
+              
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="md:hidden"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <Icon name={mobileMenuOpen ? "X" : "Menu"} className="w-6 h-6" />
+              </Button>
+            </div>
+          </div>
+          
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t">
+              <nav className="flex flex-col space-y-3 pt-4">
+                <a 
+                  href="#services" 
+                  className="text-foreground hover:text-primary transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Услуги
+                </a>
+                <a 
+                  href="#calculator" 
+                  className="text-foreground hover:text-primary transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Калькуляторы
+                </a>
+                <a 
+                  href="#reviews" 
+                  className="text-foreground hover:text-primary transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Отзывы
+                </a>
+                <a 
+                  href="#contacts" 
+                  className="text-foreground hover:text-primary transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Контакты
+                </a>
+              </nav>
+            </div>
+          )}
           </div>
         </div>
       </header>
@@ -206,64 +306,253 @@ const Index = () => {
       {/* Calculator Section */}
       <section id="calculator" className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="font-montserrat font-bold text-3xl mb-4">Калькулятор ОСАГО</h2>
+              <h2 className="font-montserrat font-bold text-3xl mb-4">Калькуляторы страхования</h2>
               <p className="text-xl text-muted-foreground">
-                Рассчитайте стоимость полиса за 30 секунд
+                Рассчитайте стоимость любого вида страхования
               </p>
             </div>
             
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Icon name="Calculator" className="w-6 h-6 mr-2 text-primary" />
-                  Расчет стоимости ОСАГО
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="power">Мощность двигателя (л.с.)</Label>
-                    <Input
-                      id="power"
-                      type="number"
-                      value={carPower}
-                      onChange={(e) => setCarPower(e.target.value)}
-                      placeholder="Например, 120"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="age">Возраст водителя</Label>
-                    <Input
-                      id="age"
-                      type="number"
-                      value={driverAge}
-                      onChange={(e) => setDriverAge(e.target.value)}
-                      placeholder="Например, 30"
-                    />
-                  </div>
-                </div>
-                
-                <Button onClick={calculateOSAGO} className="w-full" size="lg">
-                  <Icon name="Calculator" className="w-5 h-5 mr-2" />
-                  Рассчитать стоимость
+            {/* Calculator Tabs */}
+            <div className="flex flex-wrap justify-center mb-8 gap-2">
+              {[
+                { id: 'OSAGO', label: 'ОСАГО', icon: 'Car' },
+                { id: 'KASKO', label: 'КАСКО', icon: 'Shield' },
+                { id: 'LIFE', label: 'Страхование жизни', icon: 'Heart' },
+                { id: 'PROPERTY', label: 'Имущество', icon: 'Home' }
+              ].map((tab) => (
+                <Button
+                  key={tab.id}
+                  variant={activeCalculator === tab.id ? 'default' : 'outline'}
+                  onClick={() => setActiveCalculator(tab.id)}
+                  className="flex items-center space-x-2"
+                >
+                  <Icon name={tab.icon} className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.id}</span>
                 </Button>
-                
-                {calculatedPrice && (
-                  <div className="bg-primary/10 p-6 rounded-lg text-center">
-                    <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
-                      {calculatedPrice.toLocaleString()} ₽
-                    </h3>
-                    <p className="text-muted-foreground mb-4">Ориентировочная стоимость ОСАГО</p>
-                    <Button size="lg">
-                      <Icon name="Phone" className="w-5 h-5 mr-2" />
-                      Оформить полис
-                    </Button>
+              ))}
+            </div>
+            
+            {/* ОСАГО Calculator */}
+            {activeCalculator === 'OSAGO' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Car" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет стоимости ОСАГО
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="power">Мощность двигателя (л.с.)</Label>
+                      <Input
+                        id="power"
+                        type="number"
+                        value={carPower}
+                        onChange={(e) => setCarPower(e.target.value)}
+                        placeholder="Например, 120"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="age">Возраст водителя</Label>
+                      <Input
+                        id="age"
+                        type="number"
+                        value={driverAge}
+                        onChange={(e) => setDriverAge(e.target.value)}
+                        placeholder="Например, 30"
+                      />
+                    </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  
+                  <Button onClick={calculateOSAGO} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать ОСАГО
+                  </Button>
+                  
+                  {calculatedPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {calculatedPrice.toLocaleString()} ₽
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Ориентировочная стоимость ОСАГО</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* КАСКО Calculator */}
+            {activeCalculator === 'KASKO' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Shield" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет стоимости КАСКО
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="carValue">Стоимость автомобиля (₽)</Label>
+                      <Input
+                        id="carValue"
+                        type="number"
+                        value={carValue}
+                        onChange={(e) => setCarValue(e.target.value)}
+                        placeholder="Например, 1500000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="carAge">Возраст автомобиля (лет)</Label>
+                      <Input
+                        id="carAge"
+                        type="number"
+                        value={carAge}
+                        onChange={(e) => setCarAge(e.target.value)}
+                        placeholder="Например, 3"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateKASKO} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать КАСКО
+                  </Button>
+                  
+                  {kaskoPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {kaskoPrice.toLocaleString()} ₽
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Ориентировочная стоимость КАСКО</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Life Insurance Calculator */}
+            {activeCalculator === 'LIFE' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Heart" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет страхования жизни
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="personAge">Возраст страхуемого (лет)</Label>
+                      <Input
+                        id="personAge"
+                        type="number"
+                        value={personAge}
+                        onChange={(e) => setPersonAge(e.target.value)}
+                        placeholder="Например, 35"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="insuranceSum">Страховая сумма (₽)</Label>
+                      <Input
+                        id="insuranceSum"
+                        type="number"
+                        value={insuranceSum}
+                        onChange={(e) => setInsuranceSum(e.target.value)}
+                        placeholder="Например, 2000000"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateLife} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {lifePrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {lifePrice.toLocaleString()} ₽/год
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Годовая страховая премия</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Property Insurance Calculator */}
+            {activeCalculator === 'PROPERTY' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Home" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет страхования имущества
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="propertyValue">Стоимость имущества (₽)</Label>
+                      <Input
+                        id="propertyValue"
+                        type="number"
+                        value={propertyValue}
+                        onChange={(e) => setPropertyValue(e.target.value)}
+                        placeholder="Например, 8000000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="propertyType">Тип недвижимости</Label>
+                      <select 
+                        id="propertyType"
+                        value={propertyType}
+                        onChange={(e) => setPropertyType(e.target.value)}
+                        className="w-full p-2 border rounded-md"
+                      >
+                        <option value="apartment">Квартира</option>
+                        <option value="house">Дом</option>
+                        <option value="dacha">Дача</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateProperty} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {propertyPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {propertyPrice.toLocaleString()} ₽/год
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Годовая страховая премия</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </section>
