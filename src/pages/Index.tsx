@@ -316,7 +316,7 @@ const Index = () => {
             <div className="text-white">
               <Badge className="bg-green-500 text-white mb-4">Сертифицированный агент РЕСО-Гарантия</Badge>
               <h1 className="font-montserrat font-bold text-4xl md:text-5xl mb-6 leading-tight">
-                Надёжное страхование для вашего спокойствия
+                Надежное страхование для Вашего спокойствия
               </h1>
               <p className="text-xl mb-8 text-green-100 leading-relaxed">
                 Подбираю страховку точно под ваши нужды и бюджет. 
