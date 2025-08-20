@@ -9,9 +9,44 @@ import { Separator } from '@/components/ui/separator';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
+  const [activeCalculator, setActiveCalculator] = useState('OSAGO');
+  
+  // ОСАГО
   const [carPower, setCarPower] = useState('');
   const [driverAge, setDriverAge] = useState('');
   const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
+  
+  // КАСКО
+  const [carValue, setCarValue] = useState('');
+  const [carAge, setCarAge] = useState('');
+  const [kaskoPrice, setKaskoPrice] = useState<number | null>(null);
+  
+  // Страхование жизни
+  const [personAge, setPersonAge] = useState('');
+  const [insuranceSum, setInsuranceSum] = useState('');
+  const [lifePrice, setLifePrice] = useState<number | null>(null);
+  
+  // Страхование имущества (квартиры/дома)
+  const [propertyValue, setPropertyValue] = useState('');
+  const [propertyType, setPropertyType] = useState('apartment');
+  const [propertyArea, setPropertyArea] = useState('');
+  const [propertyPrice, setPropertyPrice] = useState<number | null>(null);
+  
+  // Страхование путешествий
+  const [travelDays, setTravelDays] = useState('');
+  const [travelersCount, setTravelersCount] = useState('');
+  const [travelCountry, setTravelCountry] = useState('schengen');
+  const [travelPrice, setTravelPrice] = useState<number | null>(null);
+  
+  // ДМС
+  const [dmsAge, setDmsAge] = useState('');
+  const [dmsPlan, setDmsPlan] = useState('basic');
+  const [dmsPrice, setDmsPrice] = useState<number | null>(null);
+  
+  // НС
+  const [nsAge, setNsAge] = useState('');
+  const [nsSum, setNsSum] = useState('');
+  const [nsPrice, setNsPrice] = useState<number | null>(null);
 
   const calculateOSAGO = () => {
     if (!carPower || !driverAge) return;
@@ -22,6 +57,95 @@ const Index = () => {
     
     const finalCost = Math.round(baseCost * powerMultiplier * ageMultiplier);
     setCalculatedPrice(finalCost);
+  };
+  
+  const calculateKASKO = () => {
+    if (!carValue || !carAge) return;
+    
+    const valueNum = parseInt(carValue);
+    const ageNum = parseInt(carAge);
+    const baseRate = 0.08; // 8% от стоимости
+    const ageMultiplier = ageNum > 5 ? 1.3 : ageNum > 3 ? 1.1 : 1.0;
+    
+    const finalCost = Math.round(valueNum * baseRate * ageMultiplier);
+    setKaskoPrice(finalCost);
+  };
+  
+  const calculateLife = () => {
+    if (!personAge || !insuranceSum) return;
+    
+    const ageNum = parseInt(personAge);
+    const sumNum = parseInt(insuranceSum);
+    const baseRate = ageNum < 30 ? 0.015 : ageNum < 50 ? 0.025 : 0.04;
+    
+    const finalCost = Math.round(sumNum * baseRate);
+    setLifePrice(finalCost);
+  };
+  
+  const calculateProperty = () => {
+    if (!propertyValue || !propertyArea) return;
+    
+    const valueNum = parseInt(propertyValue);
+    const areaNum = parseInt(propertyArea);
+    let baseRate = 0.003; // Базовая ставка
+    
+    // Коэффициент по типу недвижимости
+    if (propertyType === 'house') baseRate = 0.005;
+    if (propertyType === 'dacha') baseRate = 0.004;
+    
+    // Коэффициент по площади
+    const areaMultiplier = areaNum > 200 ? 1.2 : areaNum > 100 ? 1.1 : 1.0;
+    
+    const finalCost = Math.round(valueNum * baseRate * areaMultiplier);
+    setPropertyPrice(finalCost);
+  };
+  
+  const calculateTravel = () => {
+    if (!travelDays || !travelersCount) return;
+    
+    const days = parseInt(travelDays);
+    const count = parseInt(travelersCount);
+    let dailyRate = 50; // Базовая ставка за день
+    
+    // Коэффициент по стране
+    if (travelCountry === 'schengen') dailyRate = 80;
+    if (travelCountry === 'usa') dailyRate = 120;
+    if (travelCountry === 'asia') dailyRate = 60;
+    
+    const finalCost = Math.round(days * count * dailyRate);
+    setTravelPrice(finalCost);
+  };
+  
+  const calculateDMS = () => {
+    if (!dmsAge) return;
+    
+    const ageNum = parseInt(dmsAge);
+    let baseCost = 25000; // Базовая стоимость
+    
+    // Коэффициент по возрасту
+    const ageMultiplier = ageNum < 30 ? 0.8 : ageNum > 50 ? 1.5 : 1.0;
+    
+    // Коэффициент по плану
+    let planMultiplier = 1.0;
+    if (dmsPlan === 'standard') planMultiplier = 1.5;
+    if (dmsPlan === 'premium') planMultiplier = 2.5;
+    
+    const finalCost = Math.round(baseCost * ageMultiplier * planMultiplier);
+    setDmsPrice(finalCost);
+  };
+  
+  const calculateNS = () => {
+    if (!nsAge || !nsSum) return;
+    
+    const ageNum = parseInt(nsAge);
+    const sumNum = parseInt(nsSum);
+    let baseRate = 0.02; // 2% от страховой суммы
+    
+    // Коэффициент по возрасту
+    const ageMultiplier = ageNum < 40 ? 0.8 : ageNum > 60 ? 1.5 : 1.0;
+    
+    const finalCost = Math.round(sumNum * baseRate * ageMultiplier);
+    setNsPrice(finalCost);
   };
 
   const services = [
@@ -48,6 +172,24 @@ const Index = () => {
       description: "Квартиры, дома, дачи",
       icon: "Home",
       features: ["От пожара и затопления", "Страхование ремонта", "Круглосуточная поддержка"]
+    },
+    {
+      title: "Страхование путешествий",
+      description: "Медицинская страховка для поездок",
+      icon: "Plane",
+      features: ["Медрасходы за рубежом", "Отмена поездки", "Потеря багажа"]
+    },
+    {
+      title: "ДМС",
+      description: "Добровольное медицинское страхование",
+      icon: "Stethoscope",
+      features: ["Лучшие клиники", "Прикрепление к врачам", "Комплексные обследования"]
+    },
+    {
+      title: "НС",
+      description: "Несчастные случаи",
+      icon: "AlertTriangle",
+      features: ["Травмы и увечья", "Быстрые выплаты", "Круглосуточная поддержка"]
     }
   ];
 
@@ -84,7 +226,7 @@ const Index = () => {
               </div>
               <div>
                 <h1 className="font-montserrat font-bold text-xl text-primary">Страхование от А до Я</h1>
-                <p className="text-sm text-muted-foreground">с Марией Пармузиной</p>
+                <p className="text-sm text-muted-foreground">с Марией Пармузиной • 24/7 онлайн</p>
               </div>
             </div>
             <nav className="hidden md:flex items-center space-x-6">
@@ -107,8 +249,8 @@ const Index = () => {
                 Надёжное страхование для вашего спокойствия
               </h1>
               <p className="text-xl mb-8 text-green-100 leading-relaxed">
-                Более 8 лет помогаю клиентам выбрать оптимальные страховые решения. 
-                Индивидуальный подход, выгодные условия и быстрое оформление полисов.
+                Подбираю страховку точно под ваши нужды и бюджет. 
+                Работаю онлайн 24/7 для вашего удобства.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-white text-green-600 hover:bg-green-50 font-semibold">
@@ -206,64 +348,446 @@ const Index = () => {
       {/* Calculator Section */}
       <section id="calculator" className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="font-montserrat font-bold text-3xl mb-4">Калькулятор ОСАГО</h2>
+              <h2 className="font-montserrat font-bold text-3xl mb-4">Калькуляторы страхования</h2>
               <p className="text-xl text-muted-foreground">
-                Рассчитайте стоимость полиса за 30 секунд
+                Рассчитайте стоимость любого вида страхования
               </p>
             </div>
             
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Icon name="Calculator" className="w-6 h-6 mr-2 text-primary" />
-                  Расчет стоимости ОСАГО
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="power">Мощность двигателя (л.с.)</Label>
-                    <Input
-                      id="power"
-                      type="number"
-                      value={carPower}
-                      onChange={(e) => setCarPower(e.target.value)}
-                      placeholder="Например, 120"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="age">Возраст водителя</Label>
-                    <Input
-                      id="age"
-                      type="number"
-                      value={driverAge}
-                      onChange={(e) => setDriverAge(e.target.value)}
-                      placeholder="Например, 30"
-                    />
-                  </div>
-                </div>
-                
-                <Button onClick={calculateOSAGO} className="w-full" size="lg">
-                  <Icon name="Calculator" className="w-5 h-5 mr-2" />
-                  Рассчитать стоимость
+            {/* Calculator Tabs */}
+            <div className="flex flex-wrap justify-center mb-8 gap-2">
+              {[
+                { id: 'OSAGO', label: 'ОСАГО', icon: 'Car' },
+                { id: 'KASKO', label: 'КАСКО', icon: 'Shield' },
+                { id: 'LIFE', label: 'Страхование жизни', icon: 'Heart' },
+                { id: 'PROPERTY', label: 'Имущество', icon: 'Home' },
+                { id: 'TRAVEL', label: 'Путешествия', icon: 'Plane' },
+                { id: 'DMS', label: 'ДМС', icon: 'Stethoscope' },
+                { id: 'NS', label: 'НС', icon: 'AlertTriangle' }
+              ].map((tab) => (
+                <Button
+                  key={tab.id}
+                  variant={activeCalculator === tab.id ? 'default' : 'outline'}
+                  onClick={() => setActiveCalculator(tab.id)}
+                  className="flex items-center space-x-2 text-xs sm:text-sm"
+                  size="sm"
+                >
+                  <Icon name={tab.icon} className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.id}</span>
                 </Button>
-                
-                {calculatedPrice && (
-                  <div className="bg-primary/10 p-6 rounded-lg text-center">
-                    <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
-                      {calculatedPrice.toLocaleString()} ₽
-                    </h3>
-                    <p className="text-muted-foreground mb-4">Ориентировочная стоимость ОСАГО</p>
-                    <Button size="lg">
-                      <Icon name="Phone" className="w-5 h-5 mr-2" />
-                      Оформить полис
-                    </Button>
+              ))}
+            </div>
+            
+            {/* ОСАГО Calculator */}
+            {activeCalculator === 'OSAGO' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Car" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет стоимости ОСАГО
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="power">Мощность двигателя (л.с.)</Label>
+                      <Input
+                        id="power"
+                        type="number"
+                        value={carPower}
+                        onChange={(e) => setCarPower(e.target.value)}
+                        placeholder="Например, 120"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="age">Возраст водителя</Label>
+                      <Input
+                        id="age"
+                        type="number"
+                        value={driverAge}
+                        onChange={(e) => setDriverAge(e.target.value)}
+                        placeholder="Например, 30"
+                      />
+                    </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  
+                  <Button onClick={calculateOSAGO} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать ОСАГО
+                  </Button>
+                  
+                  {calculatedPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {calculatedPrice.toLocaleString()} ₽
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Ориентировочная стоимость ОСАГО</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* КАСКО Calculator */}
+            {activeCalculator === 'KASKO' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Shield" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет стоимости КАСКО
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="carValue">Стоимость автомобиля (₽)</Label>
+                      <Input
+                        id="carValue"
+                        type="number"
+                        value={carValue}
+                        onChange={(e) => setCarValue(e.target.value)}
+                        placeholder="Например, 1500000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="carAge">Возраст автомобиля (лет)</Label>
+                      <Input
+                        id="carAge"
+                        type="number"
+                        value={carAge}
+                        onChange={(e) => setCarAge(e.target.value)}
+                        placeholder="Например, 3"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateKASKO} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать КАСКО
+                  </Button>
+                  
+                  {kaskoPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {kaskoPrice.toLocaleString()} ₽
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Ориентировочная стоимость КАСКО</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Life Insurance Calculator */}
+            {activeCalculator === 'LIFE' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Heart" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет страхования жизни
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="personAge">Возраст страхуемого (лет)</Label>
+                      <Input
+                        id="personAge"
+                        type="number"
+                        value={personAge}
+                        onChange={(e) => setPersonAge(e.target.value)}
+                        placeholder="Например, 35"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="insuranceSum">Страховая сумма (₽)</Label>
+                      <Input
+                        id="insuranceSum"
+                        type="number"
+                        value={insuranceSum}
+                        onChange={(e) => setInsuranceSum(e.target.value)}
+                        placeholder="Например, 2000000"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateLife} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {lifePrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {lifePrice.toLocaleString()} ₽/год
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Годовая страховая премия</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Property Insurance Calculator */}
+            {activeCalculator === 'PROPERTY' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Home" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет страхования имущества
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="propertyValue">Стоимость имущества (₽)</Label>
+                      <Input
+                        id="propertyValue"
+                        type="number"
+                        value={propertyValue}
+                        onChange={(e) => setPropertyValue(e.target.value)}
+                        placeholder="Например, 8000000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="propertyArea">Площадь (м²)</Label>
+                      <Input
+                        id="propertyArea"
+                        type="number"
+                        value={propertyArea}
+                        onChange={(e) => setPropertyArea(e.target.value)}
+                        placeholder="Например, 85"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="propertyType">Тип недвижимости</Label>
+                      <select 
+                        id="propertyType"
+                        value={propertyType}
+                        onChange={(e) => setPropertyType(e.target.value)}
+                        className="w-full p-3 border rounded-md border-input bg-background"
+                      >
+                        <option value="apartment">Квартира</option>
+                        <option value="house">Дом</option>
+                        <option value="dacha">Дача</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateProperty} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {propertyPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {propertyPrice.toLocaleString()} ₽/год
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Годовая страховая премия</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Travel Insurance Calculator */}
+            {activeCalculator === 'TRAVEL' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Plane" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет страхования путешествий
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="travelDays">Количество дней</Label>
+                      <Input
+                        id="travelDays"
+                        type="number"
+                        value={travelDays}
+                        onChange={(e) => setTravelDays(e.target.value)}
+                        placeholder="Например, 14"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="travelersCount">Количество путешественников</Label>
+                      <Input
+                        id="travelersCount"
+                        type="number"
+                        value={travelersCount}
+                        onChange={(e) => setTravelersCount(e.target.value)}
+                        placeholder="Например, 2"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="travelCountry">Направление</Label>
+                      <select 
+                        id="travelCountry"
+                        value={travelCountry}
+                        onChange={(e) => setTravelCountry(e.target.value)}
+                        className="w-full p-3 border rounded-md border-input bg-background"
+                      >
+                        <option value="russia">Россия</option>
+                        <option value="schengen">Шенген</option>
+                        <option value="usa">США/Канада</option>
+                        <option value="asia">Азия</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateTravel} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {travelPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {travelPrice.toLocaleString()} ₽
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Стоимость страховки путешествий</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* DMS Calculator */}
+            {activeCalculator === 'DMS' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="Stethoscope" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет ДМС
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="dmsAge">Возраст (лет)</Label>
+                      <Input
+                        id="dmsAge"
+                        type="number"
+                        value={dmsAge}
+                        onChange={(e) => setDmsAge(e.target.value)}
+                        placeholder="Например, 35"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="dmsPlan">План обслуживания</Label>
+                      <select 
+                        id="dmsPlan"
+                        value={dmsPlan}
+                        onChange={(e) => setDmsPlan(e.target.value)}
+                        className="w-full p-3 border rounded-md border-input bg-background"
+                      >
+                        <option value="basic">Базовый</option>
+                        <option value="standard">Стандарт</option>
+                        <option value="premium">Премиум</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateDMS} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {dmsPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {dmsPrice.toLocaleString()} ₽/год
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Годовое обслуживание по ДМС</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* NS Calculator */}
+            {activeCalculator === 'NS' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Icon name="AlertTriangle" className="w-6 h-6 mr-2 text-primary" />
+                    Расчет страхования от НС
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="nsAge">Возраст (лет)</Label>
+                      <Input
+                        id="nsAge"
+                        type="number"
+                        value={nsAge}
+                        onChange={(e) => setNsAge(e.target.value)}
+                        placeholder="Например, 35"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="nsSum">Страховая сумма (₽)</Label>
+                      <Input
+                        id="nsSum"
+                        type="number"
+                        value={nsSum}
+                        onChange={(e) => setNsSum(e.target.value)}
+                        placeholder="Например, 1000000"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button onClick={calculateNS} className="w-full" size="lg">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Рассчитать стоимость
+                  </Button>
+                  
+                  {nsPrice && (
+                    <div className="bg-primary/10 p-6 rounded-lg text-center">
+                      <h3 className="font-montserrat font-bold text-2xl text-primary mb-2">
+                        {nsPrice.toLocaleString()} ₽/год
+                      </h3>
+                      <p className="text-muted-foreground mb-4">Годовая страховая премия от НС</p>
+                      <Button size="lg">
+                        <Icon name="Phone" className="w-5 h-5 mr-2" />
+                        Оформить полис
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </section>
@@ -320,19 +844,19 @@ const Index = () => {
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Icon name="Phone" className="w-5 h-5 text-primary mr-3" />
-                    <span>+7 (999) 123-45-67</span>
+                    <span>+7-911-938-01-00</span>
                   </div>
                   <div className="flex items-center">
                     <Icon name="Mail" className="w-5 h-5 text-primary mr-3" />
-                    <span>maria.parmuzina@reso.ru</span>
+                    <span>m.parmuzina@yandex.ru</span>
                   </div>
                   <div className="flex items-center">
                     <Icon name="MapPin" className="w-5 h-5 text-primary mr-3" />
-                    <span>Москва, ул. Тверская, 15</span>
+                    <span>Санкт-Петербург, Щербаков переулок 17а</span>
                   </div>
                   <div className="flex items-center">
                     <Icon name="Clock" className="w-5 h-5 text-primary mr-3" />
-                    <span>Пн-Пт: 9:00-19:00, Сб: 10:00-16:00</span>
+                    <span>Пн-Вс: 24/7 онлайн</span>
                   </div>
                 </div>
                 
@@ -343,7 +867,7 @@ const Index = () => {
                   <ul className="space-y-2">
                     <li className="flex items-center">
                       <Icon name="Check" className="w-4 h-4 text-green-500 mr-2" />
-                      8+ лет опыта в страховании
+Подбор страховки под ваши нужды
                     </li>
                     <li className="flex items-center">
                       <Icon name="Check" className="w-4 h-4 text-green-500 mr-2" />
