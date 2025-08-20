@@ -361,13 +361,13 @@ const Index = () => {
             {/* Calculator Tabs */}
             <div className="flex flex-wrap justify-center mb-8 gap-2">
               {[
-                { id: 'OSAGO', label: 'ОСАГО', icon: 'Car' },
-                { id: 'KASKO', label: 'КАСКО', icon: 'Shield' },
-                { id: 'LIFE', label: 'Страхование жизни', icon: 'Heart' },
-                { id: 'PROPERTY', label: 'Имущество', icon: 'Home' },
-                { id: 'TRAVEL', label: 'Путешествия', icon: 'Plane' },
-                { id: 'DMS', label: 'ДМС', icon: 'Stethoscope' },
-                { id: 'NS', label: 'НС', icon: 'AlertTriangle' }
+                { id: 'OSAGO', label: 'ОСАГО', mobile: 'ОСАГО', icon: 'Car' },
+                { id: 'KASKO', label: 'КАСКО', mobile: 'КАСКО', icon: 'Shield' },
+                { id: 'LIFE', label: 'Страхование жизни', mobile: 'ЖИЗНЬ', icon: 'Heart' },
+                { id: 'PROPERTY', label: 'Имущество', mobile: 'Имущество', icon: 'Home' },
+                { id: 'TRAVEL', label: 'Путешествия', mobile: 'Путешествия', icon: 'Plane' },
+                { id: 'DMS', label: 'ДМС', mobile: 'ДМС', icon: 'Stethoscope' },
+                { id: 'NS', label: 'НС', mobile: 'НС', icon: 'AlertTriangle' }
               ].map((tab) => (
                 <Button
                   key={tab.id}
@@ -378,7 +378,7 @@ const Index = () => {
                 >
                   <Icon name={tab.icon} className="w-4 h-4" />
                   <span className="hidden sm:inline">{tab.label}</span>
-                  <span className="sm:hidden">{tab.id}</span>
+                  <span className="sm:hidden">{tab.mobile}</span>
                 </Button>
               ))}
             </div>
