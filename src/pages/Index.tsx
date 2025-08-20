@@ -182,42 +182,49 @@ const Index = () => {
       title: "ОСАГО",
       description: "Обязательное страхование автогражданской ответственности",
       icon: "Car",
+      calculatorType: "osago",
       features: ["Быстрое оформление", "Онлайн расчет", "Скидки постоянным клиентам"]
     },
     {
       title: "КАСКО",
       description: "Добровольное страхование автомобиля",
       icon: "Shield",
+      calculatorType: "kasko",
       features: ["Защита от угона", "Ремонт у дилера", "Выплата без справок"]
     },
     {
       title: "Страхование жизни",
       description: "Накопительное и рисковое страхование",
       icon: "Heart",
+      calculatorType: "life",
       features: ["Семейные программы", "Инвестиционный доход", "Налоговые льготы"]
     },
     {
       title: "Страхование имущества",
       description: "Квартиры, дома, дачи",
       icon: "Home",
+      calculatorType: "property",
       features: ["От пожара и затопления", "Страхование ремонта", "Круглосуточная поддержка"]
     },
     {
       title: "Страхование путешествий",
       description: "Медицинская страховка для поездок",
       icon: "Plane",
+      calculatorType: "travel",
       features: ["Медрасходы за рубежом", "Отмена поездки", "Потеря багажа"]
     },
     {
       title: "ДМС",
       description: "Добровольное медицинское страхование",
       icon: "Stethoscope",
+      calculatorType: "dms",
       features: ["Лучшие клиники", "Прикрепление к врачам", "Комплексные обследования"]
     },
     {
       title: "НС",
       description: "Несчастные случаи",
       icon: "AlertTriangle",
+      calculatorType: "accident",
       features: ["Травмы и увечья", "Быстрые выплаты", "Круглосуточная поддержка"]
     }
   ];
@@ -300,6 +307,45 @@ const Index = () => {
           </div>
         </div>
       </header>
+
+
+      {/* Hero Section */}
+      <section className="py-16 bg-gradient-to-r from-green-600 to-green-700">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="text-white">
+              <Badge className="bg-green-500 text-white mb-4">Сертифицированный агент РЕСО-Гарантия</Badge>
+              <h1 className="font-montserrat font-bold text-4xl md:text-5xl mb-6 leading-tight">
+                Надёжное страхование для вашего спокойствия
+              </h1>
+              <p className="text-xl mb-8 text-green-100 leading-relaxed">
+                Подбираю страховку точно под ваши нужды и бюджет. 
+                Работаю онлайн 24/7 для вашего удобства.
+              </p>
+              <div className="flex justify-center sm:justify-start">
+                <Button 
+                  size="lg" 
+                  className="bg-green-500 text-white hover:bg-green-600 font-semibold"
+                  onClick={() => setIsConsultationOpen(true)}
+                >
+                  <Icon name="Phone" className="w-5 h-5 mr-2" />
+                  Получить консультацию
+                </Button>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 rounded-full blur-3xl opacity-30"></div>
+                <img 
+                  src="https://cdn.poehali.dev/files/ec00c872-3396-4f06-ac5f-3a2813fdef43.jpg" 
+                  alt="Мария Пармузина - страховой агент"
+                  className="relative w-80 h-80 object-cover object-top rounded-full border-8 border-white shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Calculator Section */}
       <section id="calculator" className="py-16 bg-white">
@@ -748,44 +794,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-r from-green-600 to-green-700">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="text-white">
-              <Badge className="bg-green-500 text-white mb-4">Сертифицированный агент РЕСО-Гарантия</Badge>
-              <h1 className="font-montserrat font-bold text-4xl md:text-5xl mb-6 leading-tight">
-                Надёжное страхование для вашего спокойствия
-              </h1>
-              <p className="text-xl mb-8 text-green-100 leading-relaxed">
-                Подбираю страховку точно под ваши нужды и бюджет. 
-                Работаю онлайн 24/7 для вашего удобства.
-              </p>
-              <div className="flex justify-center sm:justify-start">
-                <Button 
-                  size="lg" 
-                  className="bg-green-500 text-white hover:bg-green-600 font-semibold"
-                  onClick={() => setIsConsultationOpen(true)}
-                >
-                  <Icon name="Phone" className="w-5 h-5 mr-2" />
-                  Получить консультацию
-                </Button>
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 rounded-full blur-3xl opacity-30"></div>
-                <img 
-                  src="https://cdn.poehali.dev/files/ec00c872-3396-4f06-ac5f-3a2813fdef43.jpg" 
-                  alt="Мария Пармузина - страховой агент"
-                  className="relative w-80 h-80 object-cover rounded-full border-8 border-white shadow-2xl"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* About Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -830,7 +838,11 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card 
+                key={index} 
+                className="hover:shadow-lg transition-shadow cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => handleCalculatorClick(service.calculatorType)}
+              >
                 <CardHeader className="text-center">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon name={service.icon} className="w-8 h-8 text-primary" />
