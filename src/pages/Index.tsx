@@ -73,7 +73,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white font-open-sans">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white font-open-sans">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
@@ -98,24 +98,24 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-700">
+      <section className="py-16 bg-gradient-to-r from-green-600 to-green-700">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
-              <Badge className="bg-blue-500 text-white mb-4">Сертифицированный агент РЕСО-Гарантия</Badge>
+              <Badge className="bg-green-500 text-white mb-4">Сертифицированный агент РЕСО-Гарантия</Badge>
               <h1 className="font-montserrat font-bold text-4xl md:text-5xl mb-6 leading-tight">
                 Надёжное страхование для вашего спокойствия
               </h1>
-              <p className="text-xl mb-8 text-blue-100 leading-relaxed">
+              <p className="text-xl mb-8 text-green-100 leading-relaxed">
                 Более 8 лет помогаю клиентам выбрать оптимальные страховые решения. 
                 Индивидуальный подход, выгодные условия и быстрое оформление полисов.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 font-semibold">
+                <Button size="lg" className="bg-white text-green-600 hover:bg-green-50 font-semibold">
                   <Icon name="Calculator" className="w-5 h-5 mr-2" />
                   Рассчитать ОСАГО
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
                   <Icon name="Phone" className="w-5 h-5 mr-2" />
                   Получить консультацию
                 </Button>
@@ -123,7 +123,7 @@ const Index = () => {
             </div>
             <div className="flex justify-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full blur-3xl opacity-30"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 rounded-full blur-3xl opacity-30"></div>
                 <img 
                   src="/img/0ec90fb1-268c-488c-adfc-e214f3c0653d.jpg" 
                   alt="Мария Пармузина - страховой агент"
@@ -404,10 +404,10 @@ const Index = () => {
               <Icon name="Shield" className="w-6 h-6" />
               <h3 className="font-montserrat font-bold text-xl">Страхование от А до Я</h3>
             </div>
-            <p className="text-blue-100 mb-4">
+            <p className="text-green-100 mb-4">
               Мария Пармузина - сертифицированный агент РЕСО-Гарантия
             </p>
-            <p className="text-sm text-blue-200">
+            <p className="text-sm text-green-200">
               © 2024 Все права защищены. Лицензия ЦБ РФ № 621
             </p>
           </div>
