@@ -10,6 +10,12 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeCalculator, setActiveCalculator] = useState('OSAGO');
+  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+  
+  // Форма консультации
+  const [consultationName, setConsultationName] = useState('');
+  const [consultationPhone, setConsultationPhone] = useState('');
+  const [consultationService, setConsultationService] = useState('ОСАГО');
   
   // ОСАГО
   const [carPower, setCarPower] = useState('');
@@ -147,6 +153,29 @@ const Index = () => {
     const finalCost = Math.round(sumNum * baseRate * ageMultiplier);
     setNsPrice(finalCost);
   };
+  
+  const handleCalculatorClick = (calculatorType: string) => {
+    setActiveCalculator(calculatorType);
+    const element = document.getElementById('calculator');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+  const handleConsultationSubmit = () => {
+    // Здесь можно добавить логику отправки формы
+    console.log('Заявка на консультацию:', {
+      name: consultationName,
+      phone: consultationPhone,
+      service: consultationService
+    });
+    
+    // Очистка формы и закрытие модального окна
+    setConsultationName('');
+    setConsultationPhone('');
+    setConsultationService('ОСАГО');
+    setIsConsultationOpen(false);
+  };
 
   const services = [
     {
@@ -229,12 +258,45 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">с Марией Пармузиной • 24/7 онлайн</p>
               </div>
             </div>
-            <nav className="hidden md:flex items-center space-x-6">
-              <a href="#services" className="text-foreground hover:text-primary transition-colors">Услуги</a>
-              <a href="#calculator" className="text-foreground hover:text-primary transition-colors">Калькулятор</a>
-              <a href="#reviews" className="text-foreground hover:text-primary transition-colors">Отзывы</a>
-              <a href="#contacts" className="text-foreground hover:text-primary transition-colors">Контакты</a>
-            </nav>
+            <div className="hidden lg:flex items-center space-x-4">
+              <nav className="flex items-center space-x-4">
+                <a href="#services" className="text-foreground hover:text-primary transition-colors text-sm">Услуги</a>
+                <a href="#reviews" className="text-foreground hover:text-primary transition-colors text-sm">Отзывы</a>
+                <a href="#contacts" className="text-foreground hover:text-primary transition-colors text-sm">Контакты</a>
+              </nav>
+              
+              {/* Кнопки калькуляторов */}
+              <div className="flex items-center space-x-2">
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => handleCalculatorClick('OSAGO')}
+                >
+                  ОСАГО
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => handleCalculatorClick('KASKO')}
+                >
+                  КАСКО
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => handleCalculatorClick('PROPERTY')}
+                >
+                  Дом
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => handleCalculatorClick('TRAVEL')}
+                >
+                  Путешествия
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -253,11 +315,19 @@ const Index = () => {
                 Работаю онлайн 24/7 для вашего удобства.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-white text-green-600 hover:bg-green-50 font-semibold">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-green-600 hover:bg-green-50 font-semibold"
+                  onClick={() => handleCalculatorClick('OSAGO')}
+                >
                   <Icon name="Calculator" className="w-5 h-5 mr-2" />
                   Рассчитать ОСАГО
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
+                <Button 
+                  size="lg" 
+                  className="bg-green-500 text-white hover:bg-green-600 font-semibold"
+                  onClick={() => setIsConsultationOpen(true)}
+                >
                   <Icon name="Phone" className="w-5 h-5 mr-2" />
                   Получить консультацию
                 </Button>
@@ -267,7 +337,7 @@ const Index = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 rounded-full blur-3xl opacity-30"></div>
                 <img 
-                  src="/img/0ec90fb1-268c-488c-adfc-e214f3c0653d.jpg" 
+                  src="https://cdn.poehali.dev/files/ec00c872-3396-4f06-ac5f-3a2813fdef43.jpg" 
                   alt="Мария Пармузина - страховой агент"
                   className="relative w-80 h-80 object-cover rounded-full border-8 border-white shadow-2xl"
                 />
@@ -919,6 +989,82 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Consultation Modal */}
+      {isConsultationOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-montserrat font-bold text-xl">Получить консультацию</h3>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setIsConsultationOpen(false)}
+              >
+                <Icon name="X" className="w-5 h-5" />
+              </Button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="consultationName">Имя</Label>
+                <Input
+                  id="consultationName"
+                  value={consultationName}
+                  onChange={(e) => setConsultationName(e.target.value)}
+                  placeholder="Ваше имя"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="consultationPhone">Телефон</Label>
+                <Input
+                  id="consultationPhone"
+                  value={consultationPhone}
+                  onChange={(e) => setConsultationPhone(e.target.value)}
+                  placeholder="+7 (999) 123-45-67"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="consultationService">Вид страхования</Label>
+                <select 
+                  id="consultationService"
+                  value={consultationService}
+                  onChange={(e) => setConsultationService(e.target.value)}
+                  className="w-full p-3 border rounded-md border-input bg-background"
+                >
+                  <option value="ОСАГО">ОСАГО</option>
+                  <option value="КАСКО">КАСКО</option>
+                  <option value="Страхование жизни">Страхование жизни</option>
+                  <option value="Страхование имущества">Страхование имущества</option>
+                  <option value="Страхование путешествий">Страхование путешествий</option>
+                  <option value="ДМС">ДМС</option>
+                  <option value="НС">НС (Несчастные случаи)</option>
+                  <option value="Другое">Другое</option>
+                </select>
+              </div>
+              
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => setIsConsultationOpen(false)}
+                >
+                  Отмена
+                </Button>
+                <Button 
+                  className="flex-1 bg-primary"
+                  onClick={handleConsultationSubmit}
+                  disabled={!consultationName || !consultationPhone}
+                >
+                  Отправить заявку
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-primary text-white py-8">
