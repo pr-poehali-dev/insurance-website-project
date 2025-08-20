@@ -794,6 +794,122 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Price Disclaimer and Contact Form Section */}
+      <section className="py-12 bg-gradient-to-r from-blue-50 to-green-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Price Disclaimer */}
+            <div className="text-center mb-8">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+                <div className="flex items-start justify-center mb-4">
+                  <Icon name="Info" className="w-6 h-6 text-amber-600 mr-3 mt-1" />
+                  <div className="text-left">
+                    <h3 className="font-montserrat font-semibold text-lg text-amber-800 mb-2">
+                      Обратите внимание
+                    </h3>
+                    <p className="text-amber-700 leading-relaxed">
+                      Цены, рассчитанные в калькуляторах, являются <strong>примерными</strong> и могут отличаться от финальной стоимости. 
+                      Точную стоимость страховки я рассчитаю индивидуально с учетом всех ваших данных и предоставлю 
+                      несколько вариантов от разных страховых компаний.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <h2 className="font-montserrat font-bold text-3xl mb-4 text-foreground">
+                  Получите точный расчет стоимости
+                </h2>
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                  Оставьте заявку, и я подберу для вас самые выгодные условия страхования. 
+                  Консультация бесплатная, расчет займет всего 10 минут.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <Icon name="CheckCircle" className="w-5 h-5 text-green-500 mr-3" />
+                    <span className="text-sm">Сравнение предложений от 15+ компаний</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Icon name="CheckCircle" className="w-5 h-5 text-green-500 mr-3" />
+                    <span className="text-sm">Помощь в выборе оптимального варианта</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Icon name="CheckCircle" className="w-5 h-5 text-green-500 mr-3" />
+                    <span className="text-sm">Оформление и доставка документов</span>
+                  </div>
+                </div>
+              </div>
+
+              <Card className="shadow-lg">
+                <CardHeader className="bg-primary text-white rounded-t-lg">
+                  <CardTitle className="flex items-center">
+                    <Icon name="Calculator" className="w-5 h-5 mr-2" />
+                    Быстрая заявка на расчет
+                  </CardTitle>
+                  <CardDescription className="text-green-100">
+                    Заполните форму, и я свяжусь с вами в течение 15 минут
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-6 space-y-4">
+                  <div>
+                    <Label htmlFor="calcName">Ваше имя *</Label>
+                    <Input 
+                      id="calcName" 
+                      placeholder="Например, Иван"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="calcPhone">Телефон *</Label>
+                    <Input 
+                      id="calcPhone" 
+                      placeholder="+7 (999) 123-45-67"
+                      className="mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="calcService">Вид страхования</Label>
+                    <select 
+                      id="calcService"
+                      className="w-full p-3 border rounded-md border-input bg-background mt-1"
+                    >
+                      <option value="">Выберите услугу</option>
+                      <option value="ОСАГО">ОСАГО</option>
+                      <option value="КАСКО">КАСКО</option>
+                      <option value="Страхование жизни">Страхование жизни</option>
+                      <option value="Страхование имущества">Страхование имущества</option>
+                      <option value="Страхование путешествий">Страхование путешествий</option>
+                      <option value="ДМС">ДМС</option>
+                      <option value="НС">НС (Несчастные случаи)</option>
+                      <option value="Другое">Другое</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label htmlFor="calcMessage">Дополнительная информация</Label>
+                    <Textarea 
+                      id="calcMessage" 
+                      placeholder="Расскажите о ваших потребностях (необязательно)"
+                      className="mt-1"
+                      rows={3}
+                    />
+                  </div>
+                  <Button className="w-full bg-primary hover:bg-primary/90" size="lg">
+                    <Icon name="Send" className="w-5 h-5 mr-2" />
+                    Получить персональный расчет
+                  </Button>
+                  <p className="text-xs text-muted-foreground text-center">
+                    Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
