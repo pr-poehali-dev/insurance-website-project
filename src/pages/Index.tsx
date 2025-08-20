@@ -827,10 +827,7 @@ const Index = () => {
                   Консультация бесплатная, расчет займет всего 10 минут.
                 </p>
                 <div className="space-y-3">
-                  <div className="flex items-center">
-                    <Icon name="CheckCircle" className="w-5 h-5 text-green-500 mr-3" />
-                    <span className="text-sm">Сравнение предложений от 15+ компаний</span>
-                  </div>
+
                   <div className="flex items-center">
                     <Icon name="CheckCircle" className="w-5 h-5 text-green-500 mr-3" />
                     <span className="text-sm">Помощь в выборе оптимального варианта</span>
@@ -926,7 +923,7 @@ const Index = () => {
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Icon name="Users" className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">15+ млн клиентов</h3>
+                <h3 className="font-semibold text-lg mb-2">Миллионы клиентов</h3>
                 <p className="text-muted-foreground">Доверяют нашим услугам</p>
               </div>
               <div className="text-center">
